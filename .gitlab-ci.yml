@@ -31,7 +31,7 @@ unit-test:
       - coverage/junit.xml
     reports:
       junit: coverage/junit.xml
-    expires_in: 1 week
+    expire_in: 1 week
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev" && $CI_PIPELINE_SOURCE == "merge_request_event"'
       when: on_success
