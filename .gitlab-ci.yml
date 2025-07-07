@@ -10,7 +10,6 @@ stages:
   - deploy:staging
   - deploy:uat
   - deploy:prod
-  - deploy:hotfix
 
 variables:
   SERVICE_NAME: 'nodejs-api'
@@ -153,7 +152,7 @@ scan-image:
     - when: never
 
 deploy-dev:
-  stage: deploy-dev
+  stage: deploy:dev
   tags:
     - gitlab-runner-autoscale
   stage: deploy-dev
@@ -167,7 +166,7 @@ deploy-dev:
 deploy-staging:
   tags:
     - gitlab-runner-autoscale
-  stage: deploy-staging
+  stage: deploy:staging
   before_script:
     DEV_IMAGE=$(git log --format="%h" -n 2 --abbrev=8 | tail -n 1)
   script:
@@ -180,7 +179,7 @@ deploy-staging:
 deploy-uat:
   tags:
     - gitlab-runner-autoscale
-  stage: deploy-uat
+  stage: deploy:uat
   before_script:
     DEV_IMAGE=$(git log --format="%h" -n 3 --abbrev=8 | tail -n 1)
   script:
@@ -193,7 +192,7 @@ deploy-uat:
 deploy-prod:
   tags:
     - gitlab-runner-autoscale
-  stage: deploy-prod
+  stage: deploy:prod
   before_script:
     DEV_IMAGE=$(git log --format="%h" -n 4 --abbrev=8 | tail -n 1)
   script:
