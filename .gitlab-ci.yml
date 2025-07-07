@@ -153,8 +153,7 @@ scan-image:
     - when: never
 
 deploy-dev:
-  tags:
-    - gitlab-runner-autoscale
+  stage: deploy-dev
   tags:
     - gitlab-runner-autoscale
   stage: deploy-dev
