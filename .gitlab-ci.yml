@@ -10,6 +10,7 @@ stages:
   - deploy:staging
   - deploy:uat
   - deploy:prod
+  - deploy:hotfix
 
 variables:
   SERVICE_NAME: 'nodejs-api'
