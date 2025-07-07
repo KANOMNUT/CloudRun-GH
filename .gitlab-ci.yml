@@ -245,7 +245,7 @@ deploy-prod:
   dependencies:
     - docker-build-prod
   rules:
-    - if: '$CI_COMMIT_TAG !~ /hotfix/'
+    - if: '$CI_COMMIT_TAG && $CI_COMMIT_TAG !~ /hotfix/'
       when: on_success
     - when: never
 
