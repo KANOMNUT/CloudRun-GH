@@ -148,7 +148,7 @@ scan-image:
   dependencies:
     - docker-build-dev
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev" ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
+    - if: '$CI_COMMIT_BRANCH == "dev" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
