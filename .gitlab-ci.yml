@@ -150,8 +150,9 @@ scan-image:
   tags:
     - shared
   stage: scan:image
-  image: docker.io/aquasec/trivy:latest
-  entrypoint: [""]
+  image: 
+    name: docker.io/aquasec/trivy:latest
+    entrypoint: [""]
   variables:
     TRIVY_NO_PROGRESS: "true"
     TRIVY_CACHE_DIR: ".trivycache/"
