@@ -41,6 +41,10 @@ docker-build-dev:
     - shared
   stage: docker:dev
   image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   before_script:
@@ -59,6 +63,10 @@ docker-build-staging:
     - shared
   stage: docker:staging
   image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   before_script:
@@ -78,6 +86,10 @@ docker-build-uat:
     - shared
   stage: docker:uat
   image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   before_script:
@@ -97,6 +109,10 @@ docker-build-prod:
     - shared
   stage: docker:prod
   image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   before_script:
@@ -116,6 +132,10 @@ docker-build-hotfix:
     - shared
   stage: docker:hotfix
   image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   before_script:
