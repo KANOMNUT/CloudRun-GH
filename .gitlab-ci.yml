@@ -154,7 +154,7 @@ scan-image:
   stage: scan:image
   image: debian:latest
   before_script:
-    - apt-get update; apt-get install curl -y;
+    - apt-get update; apt-get install curl git -y;
     - export TRIVY_VERSION=$(curl -s "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') 
     - echo $TRIVY_VERSION
     - curl -L https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz | tar -zxvf - 
