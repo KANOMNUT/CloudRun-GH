@@ -165,7 +165,7 @@ scan-image:
     - docker login $DOCKER_IMAGE_NAME -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - trivy --version
   script:
-    - trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE
+    - trivy image --exit-code 0 --format template --template "@/contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE
     - cat gl-container-scanning-report.json
   cache:
     paths:
