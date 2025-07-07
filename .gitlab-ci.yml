@@ -155,7 +155,6 @@ deploy-dev:
   stage: deploy:dev
   tags:
     - gitlab-runner-autoscale
-  stage: deploy-dev
   script:
     - echo "Deploy DEV"
   rules:
