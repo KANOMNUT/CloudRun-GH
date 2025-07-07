@@ -50,7 +50,7 @@ docker-build-dev:
     - docker build -t $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE .
     - docker push $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "dev" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
@@ -69,7 +69,7 @@ docker-build-staging:
     - docker image tag $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE $DOCKER_IMAGE_NAME:stg-$DEV_IMAGE
     - docker push $DOCKER_IMAGE_NAME:stg-$DEV_IMAGE
   rules:
-    - if: '$CI_COMMIT_BRANCH == "staging" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "staging" ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
@@ -88,7 +88,7 @@ docker-build-uat:
     - docker image tag $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE $DOCKER_IMAGE_NAME:uat-$DEV_IMAGE
     - docker push $DOCKER_IMAGE_NAME:uat-$DEV_IMAGE
   rules:
-    - if: '$CI_COMMIT_BRANCH == "uat" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "uat" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
@@ -107,7 +107,7 @@ docker-build-prod:
     - docker image tag $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE $DOCKER_IMAGE_NAME:$CI_COMMIT_TAG
     - docker push $DOCKER_IMAGE_NAME:$CI_COMMIT_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "uat" && $CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_TAG'
       when: on_success
     - when: never
 
@@ -122,8 +122,9 @@ docker-build-hotfix:
     - docker login git.7solutions.co.th -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
     - docker build -t $DOCKER_IMAGE_NAME:$CI_COMMIT_TAG .
+    - docker push $DOCKER_IMAGE_NAME:$CI_COMMIT_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ "/^hotfix\/.+$" && $CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push") && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ "/^hotfix\/.+$" && $CI_COMMIT_TAG'
       when: on_success
     - when: never
 
@@ -147,7 +148,7 @@ scan-image:
   dependencies:
     - docker-build-dev
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "dev" ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
@@ -158,7 +159,7 @@ deploy-dev:
   script:
     - echo "Deploy DEV"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "dev" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
@@ -171,7 +172,7 @@ deploy-staging:
   script:
     - echo "Deploy Staging"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "staging" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "staging" ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
   
@@ -184,7 +185,7 @@ deploy-uat:
   script:
     - echo "Deploy UAT"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "uat" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "uat" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
 
@@ -197,6 +198,6 @@ deploy-prod:
   script:
     - echo "Deploy Prod"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
     - when: never
