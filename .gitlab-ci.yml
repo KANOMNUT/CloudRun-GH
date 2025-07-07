@@ -19,7 +19,7 @@ variables:
 
 unit-test:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: test:unit
   image: node:22-alpine
   script:
@@ -38,7 +38,7 @@ unit-test:
   
 docker-build-dev:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: docker:dev
   image: docker:latest
   services:
@@ -56,7 +56,7 @@ docker-build-dev:
 
 docker-build-staging:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: docker:staging
   image: docker:latest
   services:
@@ -75,7 +75,7 @@ docker-build-staging:
 
 docker-build-uat:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: docker:uat
   image: docker:latest
   services:
@@ -94,7 +94,7 @@ docker-build-uat:
 
 docker-build-prod:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: docker:prod
   image: docker:latest
   services:
@@ -113,7 +113,7 @@ docker-build-prod:
 
 docker-build-hotfix:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: docker:hotfix
   image: docker:latest
   services:
@@ -130,7 +130,7 @@ docker-build-hotfix:
 
 scan-image:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: scan:image
   image: debian:latest
   before_script:
@@ -155,7 +155,7 @@ scan-image:
 deploy-dev:
   stage: deploy:dev
   tags:
-    - gitlab-runner-autoscale
+    - shared
   script:
     - echo "Deploy DEV"
   rules:
@@ -165,7 +165,7 @@ deploy-dev:
 
 deploy-staging:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: deploy:staging
   before_script:
     DEV_IMAGE=$(git log --format="%h" -n 2 --abbrev=8 | tail -n 1)
@@ -178,7 +178,7 @@ deploy-staging:
   
 deploy-uat:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: deploy:uat
   before_script:
     DEV_IMAGE=$(git log --format="%h" -n 3 --abbrev=8 | tail -n 1)
@@ -191,7 +191,7 @@ deploy-uat:
 
 deploy-prod:
   tags:
-    - gitlab-runner-autoscale
+    - shared
   stage: deploy:prod
   before_script:
     DEV_IMAGE=$(git log --format="%h" -n 4 --abbrev=8 | tail -n 1)
