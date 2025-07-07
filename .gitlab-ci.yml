@@ -14,8 +14,6 @@ stages:
 variables:
   SERVICE_NAME: 'nodejs-api'
   DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE/$SERVICE_NAME
-  TRIVY_NO_PROGRESS: "true"
-  TRIVY_CACHE_DIR: ".trivycache/"
 
 unit-test:
   tags:
@@ -152,22 +150,17 @@ scan-image:
   tags:
     - shared
   stage: scan:image
-  image: debian:latest
+  image: docker.io/aquasec/trivy:latest
+  entrypoint: [""]
   variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_DRIVER: overlay2
-  services:
-    - docker:dind
+    TRIVY_NO_PROGRESS: "true"
+    TRIVY_CACHE_DIR: ".trivycache/"
   before_script:
-    - apt-get update; apt-get install curl git docker -y;
-    - export TRIVY_VERSION=$(curl -s "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') 
-    - echo $TRIVY_VERSION
-    - curl -L https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz | tar -zxvf - 
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
     - docker login $DOCKER_IMAGE_NAME -u $DOCKER_USERNAME $DOCKER_PASSWORD
+    - trivy --version
   script:
-    - ./trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE
+    - trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE_NAME:dev-$DEV_IMAGE
     - cat gl-container-scanning-report.json
   cache:
     paths:
