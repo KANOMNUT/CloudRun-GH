@@ -156,7 +156,11 @@ scan-image:
   variables:
     TRIVY_NO_PROGRESS: "true"
     TRIVY_CACHE_DIR: ".trivycache/"
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   before_script:
+    - apk add --update docker openrc
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
     - docker login $DOCKER_IMAGE_NAME -u $DOCKER_USERNAME $DOCKER_PASSWORD
     - trivy --version
