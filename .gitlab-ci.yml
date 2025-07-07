@@ -160,7 +160,7 @@ scan-image:
     - curl -L https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz | tar -zxvf - 
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
-    - ./trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE:dev$DEV_IMAGE
+    - ./trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE:dev-$DEV_IMAGE
     - cat gl-container-scanning-report.json
   cache:
     paths:
