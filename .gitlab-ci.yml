@@ -186,6 +186,8 @@ deploy-dev:
   image:
     name: line/kubectl-kustomize:latest
     entrypoint: [""]
+  before_script:
+    - apk --update add git
   script:
     - echo "Deploy DEV"
   rules:
@@ -201,6 +203,7 @@ deploy-staging:
     name: line/kubectl-kustomize:latest
     entrypoint: [""]
   before_script:
+    - apk --update add git
     - DEV_IMAGE=$(git log --format="%h" -n 2 --abbrev=8 | tail -n 1)
   script:
     - echo "Deploy Staging"
@@ -217,6 +220,7 @@ deploy-uat:
     name: line/kubectl-kustomize:latest
     entrypoint: [""]
   before_script:
+    - apk --update add git
     - DEV_IMAGE=$(git log --format="%h" -n 3 --abbrev=8 | tail -n 1)
   script:
     - echo "Deploy UAT"
@@ -233,6 +237,7 @@ deploy-prod:
     name: line/kubectl-kustomize:latest
     entrypoint: [""]
   before_script:
+    - apk --update add git docker openrc
     - docker login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
     - echo "Deploy Prod"
