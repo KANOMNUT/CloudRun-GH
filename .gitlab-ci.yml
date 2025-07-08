@@ -144,7 +144,7 @@ docker-build-hotfix:
     - docker build -t $DOCKER_IMAGE_NAME:hotfix-$HOTFIX_IMAGE_TAG .
     - docker push $DOCKER_IMAGE_NAME:hotfix-$HOTFIX_IMAGE_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
+    - if: '$CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_BEFORE_SHA != "0000000000000000000000000000000000000000"'
       when: on_success
     - when: never
 
@@ -174,6 +174,37 @@ scan-image:
       - .trivycache/ 
   dependencies:
     - docker-build-dev
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/" )&& ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
+      when: on_success
+    - when: never
+
+scan-image-hotfix:
+  tags:
+    - shared
+  stage: scan:image
+  image: 
+    name: docker.io/aquasec/trivy:latest
+    entrypoint: [""]
+  variables:
+    TRIVY_NO_PROGRESS: "true"
+    TRIVY_CACHE_DIR: ".trivycache/"
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - apk add --update docker openrc
+    - HOTFIX_IMAGE_TAG=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
+    - docker login $DOCKER_IMAGE_NAME -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - trivy --version
+  script:
+    - trivy image --exit-code 0 --format template --template "@/contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_IMAGE_NAME:hotfix-$HOTFIX_IMAGE_TAG
+    - cat gl-container-scanning-report.json
+  cache:
+    paths:
+      - .trivycache/ 
+  dependencies:
+    - docker-build-hotfix
   rules:
     - if: '($CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/" )&& ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
