@@ -322,7 +322,7 @@ deploy-hotfix:
     DOCKER_DRIVER: overlay2
   before_script:
     - docker login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - HOTFIX_IMAGE_TAG=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
+    - HOTFIX_IMAGE_TAG=$(git log --format="%h" -n 2 --abbrev=8 | tail -n 1)
     - cat /etc/os-release
     - git config --global user.name gitlab-ci-bot
     - git config --global user.email gitlab-ci-bot@7solutions.co.th
