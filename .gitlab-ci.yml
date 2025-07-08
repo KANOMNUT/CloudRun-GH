@@ -225,7 +225,7 @@ deploy-dev:
     - git config user.email gitlab-ci-bot@7solutions.co.th
   script:
     - echo "Deploy DEV"
-    - git clone https://$GIT_USERNAME:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT.git
+    - git clone https://$GIT_USER:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT.git
     - cd $KUSTOMIZE_PROJECT/kustomize/$SERVICE_NAME/overlays/dev/
     - kustomize edit set image git.7solutions.co.th:5050/devops/first-ci-cd-pipeline/nodejs-api:IMAGE_TAG=dev-$DEV_IMAGE
     - git commit -am "update image tag dev-$DEV_IMAGE"
