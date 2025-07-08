@@ -221,8 +221,8 @@ deploy-dev:
   before_script:
     - apk --update add git
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
-    - git config user.name gitlab-ci-bot
-    - git config user.email gitlab-ci-bot@7solutions.co.th
+    - git config --global user.name gitlab-ci-bot
+    - git config --global user.email gitlab-ci-bot@7solutions.co.th
   script:
     - echo "Deploy DEV"
     - git clone https://$GIT_USER:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT
@@ -245,8 +245,8 @@ deploy-staging:
   before_script:
     - apk --update add git
     - DEV_IMAGE=$(git log --format="%h" -n 2 --abbrev=8 | tail -n 1)
-    - git config user.name gitlab-ci-bot
-    - git config user.email gitlab-ci-bot@7solutions.co.th
+    - git config --global user.name gitlab-ci-bot
+    - git config --global user.email gitlab-ci-bot@7solutions.co.th
   script:
     - echo "Deploy Staging"
     - git clone https://$GIT_USERNAME:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT
@@ -269,8 +269,8 @@ deploy-uat:
   before_script:
     - apk --update add git
     - DEV_IMAGE=$(git log --format="%h" -n 3 --abbrev=8 | tail -n 1)
-    - git config user.name gitlab-ci-bot
-    - git config user.email gitlab-ci-bot@7solutions.co.th
+    - git config --global user.name gitlab-ci-bot
+    - git config --global user.email gitlab-ci-bot@7solutions.co.th
   script:
     - echo "Deploy UAT"
     - git clone https://$GIT_USERNAME:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT
