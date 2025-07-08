@@ -226,7 +226,7 @@ deploy-dev:
   script:
     - echo "Deploy DEV"
     - git clone https://$GIT_USER:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT
-    - cd $KUSTOMIZE_PROJECT/kustomize/$SERVICE_NAME/overlays/dev/
+    - cd kustomization/kustomize/$SERVICE_NAME/overlays/dev/
     - kustomize edit set image git.7solutions.co.th:5050/devops/first-ci-cd-pipeline/nodejs-api:IMAGE_TAG=dev-$DEV_IMAGE
     - git commit -am "update image tag dev-$DEV_IMAGE"
     - git push
@@ -250,7 +250,7 @@ deploy-staging:
   script:
     - echo "Deploy Staging"
     - git clone https://$GIT_USERNAME:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT
-    - cd $KUSTOMIZE_PROJECT/kustomize/$SERVICE_NAME/overlays/stg/
+    - cd kustomization/kustomize/$SERVICE_NAME/overlays/stg/
     - kustomize edit set image git.7solutions.co.th:5050/devops/first-ci-cd-pipeline/nodejs-api:IMAGE_TAG=stg-$DEV_IMAGE
     - git commit -am "update image tag stg-$DEV_IMAGE"
     - git push
@@ -269,8 +269,15 @@ deploy-uat:
   before_script:
     - apk --update add git
     - DEV_IMAGE=$(git log --format="%h" -n 3 --abbrev=8 | tail -n 1)
+    - git config user.name gitlab-ci-bot
+    - git config user.email gitlab-ci-bot@7solutions.co.th
   script:
     - echo "Deploy UAT"
+    - git clone https://$GIT_USERNAME:$GIT_PASSWORD@$CI_SERVER_HOST/$KUSTOMIZE_PROJECT
+    - cd kustomization/kustomize/$SERVICE_NAME/overlays/uat/
+    - kustomize edit set image git.7solutions.co.th:5050/devops/first-ci-cd-pipeline/nodejs-api:IMAGE_TAG=uat-$DEV_IMAGE
+    - git commit -am "update image tag uat-$DEV_IMAGE"
+    - git push
   rules:
     - if: '$CI_COMMIT_BRANCH == "uat" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
