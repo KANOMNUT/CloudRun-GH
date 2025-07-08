@@ -31,7 +31,7 @@ unit-test:
       junit: coverage/junit.xml
     expire_in: 1 week
   rules:
-    - if: '($CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/") && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
+    - if: '($CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/") && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_BEFORE_SHA != "0000000000000000000000000000000000000000"'
       when: on_success
     - when: never
   
@@ -206,7 +206,7 @@ scan-image-hotfix:
   dependencies:
     - docker-build-hotfix
   rules:
-    - if: '$CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
+    - if: '$CI_COMMIT_BRANCH =~ "/^hotfix\/.+$/" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_BEFORE_SHA != "0000000000000000000000000000000000000000"'
       when: on_success
     - when: never
 
