@@ -25,6 +25,8 @@ buildah-build:
   image: google/cloud-sdk:518.0.0-stable
   variables:
     DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
     FF_USE_POWERSHELL_PATH_RESOLVER: "true"
     FF_RETRIEVE_POD_WARNING_EVENTS: "true"
     FF_PRINT_POD_EVENTS: "true"
@@ -34,7 +36,7 @@ buildah-build:
     - apt update -y && apt install -y podman buildah
     - podman version
     - buildah version
-    - buildah login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD" git.7solutions.co.th:5050
+    - buildah login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD" https://git.7solutions.co.th:5050
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
     - buildah version
