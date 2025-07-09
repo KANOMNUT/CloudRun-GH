@@ -23,8 +23,6 @@ buildah-build:
   tags:
     - buildah-runner
   image: google/cloud-sdk:518.0.0-alpine
-  services:
-    - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
