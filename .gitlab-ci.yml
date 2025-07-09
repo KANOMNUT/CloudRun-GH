@@ -22,7 +22,7 @@ buildah-build:
   stage: buildah:test
   tags:
     - buildah-runner
-  image: google/cloud-sdk:518.0.0-alpine
+  image: google/cloud-sdk:518.0.0-stable
   variables:
     DOCKER_HOST: tcp://docker:2375
     FF_USE_POWERSHELL_PATH_RESOLVER: "true"
@@ -31,7 +31,7 @@ buildah-build:
     FF_SCRIPT_SECTIONS: "true"
     HOME: /my_custom_dir
   before_script:
-    - apk --update add podman
+    - apt update -y && apt install -y podman
     - podman version
     - podman login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
