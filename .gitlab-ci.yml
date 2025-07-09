@@ -24,9 +24,6 @@ buildah-build:
     - buildah-runner
   image: google/cloud-sdk:518.0.0-alpine
   variables:
-    STORAGE_DRIVER: vfs
-    BUILDAH_ISOLATION: chroot
-    BUILDAH_NO_NET: "1"
     DOCKER_HOST: tcp://docker:2375
     FF_USE_POWERSHELL_PATH_RESOLVER: "true"
     FF_RETRIEVE_POD_WARNING_EVENTS: "true"
