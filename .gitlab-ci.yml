@@ -35,8 +35,8 @@ buildah-build:
     - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
     - buildah version
-    - buildah build -t $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE .
-    - buildah push $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE
+    - buildah build -t $DOCKER_IMAGE_NAME:buildah .
+    - buildah push $DOCKER_IMAGE_NAME:buildah
   rules:
     - if: '$CI_COMMIT_BRANCH == "feat/gitlab-ci" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
