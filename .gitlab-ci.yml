@@ -22,7 +22,7 @@ buildah-build:
   stage: buildah:test
   tags:
     - buildah-runner
-  image: quay.io/podman/stable
+  image: quay.io/buildah/stable
   variables:
     DOCKER_HOST: tcp://docker:2375
     FF_USE_POWERSHELL_PATH_RESOLVER: "true"
