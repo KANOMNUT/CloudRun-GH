@@ -1,4 +1,5 @@
 stages:
+  - buildah:test
   - test:unit
   - docker:dev
   - docker:staging
@@ -16,6 +17,26 @@ variables:
   SERVICE_NAME: 'nodejs-api'
   DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE/$SERVICE_NAME
   KUSTOMIZE_PROJECT: devops/kustomization.git
+
+buildah-build:
+  stage: buildah:test
+  tags:
+    - buildah-runner
+  image: quay.io/buildah/stable
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  script:
+    - buildah version
+    - buildah build -t $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE .
+    - buildah push $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "feat/gitlab-ci" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
+      when: on_success
+    - when: never
 
 unit-test:
   tags:
