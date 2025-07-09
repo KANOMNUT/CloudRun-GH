@@ -31,9 +31,7 @@ buildah-build:
     FF_SCRIPT_SECTIONS: "true"
     STORAGE_DRIVER: vfs
     HOME: /my_custom_dir
-    CONTAINERS_STORAGE_CONF: /my_custom_dir/containers/storage.conf
   before_script:
-    - mkdir -p /my_custom_dir/.local/share/containers/storage
     - apk --update add buildah
     - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - buildah --storage-driver vfs version
