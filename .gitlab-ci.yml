@@ -36,6 +36,12 @@ buildah-build:
     - apt update -y && apt install -y podman buildah
     - podman version
     - buildah version
+    - mkdir -p /etc/containers
+    - |
+      cat <<EOF > /etc/containers/registries.conf
+      [registries.insecure]
+      registries = ["git.7solutions.co.th:5050"]
+      EOF
     - buildah login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD" https://git.7solutions.co.th:5050
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
