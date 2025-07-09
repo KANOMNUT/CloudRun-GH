@@ -27,6 +27,10 @@ buildah-build:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
+    FF_USE_POWERSHELL_PATH_RESOLVER: "true"
+    FF_RETRIEVE_POD_WARNING_EVENTS: "true"
+    FF_PRINT_POD_EVENTS: "true"
+    FF_SCRIPT_SECTIONS: "true"
   before_script:
     - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
