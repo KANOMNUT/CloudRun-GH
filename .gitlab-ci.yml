@@ -32,6 +32,8 @@ buildah-build:
     FF_PRINT_POD_EVENTS: "true"
     FF_SCRIPT_SECTIONS: "true"
     HOME: /my_custom_dir
+  before_script:
+    - apk --update add buildah
   script:
     - buildah version
   rules:
