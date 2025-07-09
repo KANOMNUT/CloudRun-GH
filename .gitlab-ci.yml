@@ -31,6 +31,7 @@ buildah-build:
     FF_RETRIEVE_POD_WARNING_EVENTS: "true"
     FF_PRINT_POD_EVENTS: "true"
     FF_SCRIPT_SECTIONS: "true"
+    HOME: /my_custom_dir
   before_script:
     - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
