@@ -34,7 +34,8 @@ buildah-build:
     FF_SCRIPT_SECTIONS: "true"
     HOME: /my_custom_dir
   before_script:
-    - apt update -y && apt install -y buildah git
+    # - apt update -y && apt install -y buildah git
+    - apk --update add buildah git
     - buildah version
     - buildah login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD" git.7solutions.co.th:5050
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
