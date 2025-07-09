@@ -33,8 +33,7 @@ buildah-build:
     FF_SCRIPT_SECTIONS: "true"
     HOME: /my_custom_dir
   before_script:
-    - apt update -y && apt install -y podman buildah git
-    - podman version
+    - apt update -y && apt install -y buildah git
     - buildah version
     - mkdir -p /etc/containers
     - |
@@ -46,8 +45,8 @@ buildah-build:
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
     - buildah version
-    - buildah build --build-arg gitlab_username=ci-bot -t $DOCKER_IMAGE_NAME:podman-$DEV_IMAGE .
-    - buildah push $DOCKER_IMAGE_NAME:podman-$DEV_IMAGE
+    - buildah build --build-arg gitlab_username=ci-bot -t $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE .
+    - buildah push $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE
   rules:
     - if: '$CI_COMMIT_BRANCH == "feat/gitlab-ci" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
