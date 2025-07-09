@@ -34,7 +34,7 @@ buildah-build:
     HOME: /my_custom_dir
   before_script:
     - whoami 
-    - sudo apk --update add buildah
+    - apk --update add buildah
   script:
     - buildah version
   rules:
