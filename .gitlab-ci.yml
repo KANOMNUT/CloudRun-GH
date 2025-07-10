@@ -36,12 +36,14 @@ buildah-build:
     # - apt update -y && apt install -y buildah git
     - apk --update add buildah netavark iptables git
     - buildah version
-    - buildah --isolation=chroot login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    # - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - gcloud auth activate-service-account $GCP_SA_IAM --key-file $GCP_SA
+    - gcloud config set project $GCP_PROJECT_ID --quite
+    - gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quite
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
-    - buildah --isolation=chroot build --build-arg gitlab_username=ci-bot -t $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE .
-    - buildah --isolation=chroot push $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE
-    - gcloud config set project devops-onbording-7sol
+    - buildah --isolation=chroot build --build-arg gitlab_username=ci-bot -t asia-southeast1-docker.pkg.dev/devops-buildah/nodejs-api:buildah-$DEV_IMAGE .
+    - buildah push asia-southeast1-docker.pkg.dev/devops-buildah/nodejs-api:buildah-$DEV_IMAGE
   rules:
     - if: '$CI_COMMIT_BRANCH == "feat/gitlab-ci" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
