@@ -27,8 +27,8 @@ buildah-build:
   variables:
     DOCKER_HOST: tcp://docker:2375
     STORAGE_DRIVER: vfs
-    BUILDAH_FORMAT: docker
-    BUILDAH_ISOLATION: chroot
+    # BUILDAH_FORMAT: docker
+    # BUILDAH_ISOLATION: chroot
     FF_USE_POWERSHELL_PATH_RESOLVER: "true"
     FF_RETRIEVE_POD_WARNING_EVENTS: "true"
     FF_PRINT_POD_EVENTS: "true"
