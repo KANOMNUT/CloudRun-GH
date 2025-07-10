@@ -36,11 +36,11 @@ buildah-build:
     # - apt update -y && apt install -y buildah git
     - apk --update add buildah netavark iptables git
     - buildah version
-    - buildah login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - buildah --isolation=chroot login git.7solutions.co.th:5050 -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
-    - buildah build --build-arg gitlab_username=ci-bot -t $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE .
-    - buildah push $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE
+    - buildah --isolation=chroot build --build-arg gitlab_username=ci-bot -t $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE .
+    - buildah --isolation=chroot push $DOCKER_IMAGE_NAME:buildah-$DEV_IMAGE
     - gcloud config set project devops-onbording-7sol
   rules:
     - if: '$CI_COMMIT_BRANCH == "feat/gitlab-ci" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
