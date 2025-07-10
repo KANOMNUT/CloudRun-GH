@@ -43,8 +43,8 @@ buildah-build:
     - gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quiet 
     - DEV_IMAGE=$(git log --format="%h" -n 1 --abbrev=8 | tail -n 1)
   script:
-    - buildah --cap-add=all --security-opt=apparmor=unconfined --security-opt=seccomp=unconfined --isolation=chroot --tls-verify=false build --build-arg gitlab_username=ci-bot -t asia-southeast1-docker.pkg.dev/devops-buildah/nodejs-api:buildah-$DEV_IMAGE .
-    - buildah push asia-southeast1-docker.pkg.dev/devops-buildah/nodejs-api:buildah-$DEV_IMAGE
+    - buildah build --build-arg gitlab_username=ci-bot -t asia-southeast1-docker.pkg.dev/$GCP_PROJECT_ID/devops-buildah/nodejs-api:buildah-$DEV_IMAGE .
+    - buildah push asia-southeast1-docker.pkg.dev/GCP_PROJECT_ID/devops-buildah/nodejs-api:buildah-$DEV_IMAGE
   rules:
     - if: '$CI_COMMIT_BRANCH == "feat/gitlab-ci" && ($CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push")'
       when: on_success
