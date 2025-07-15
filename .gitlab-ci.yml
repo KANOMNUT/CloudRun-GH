@@ -51,8 +51,6 @@ buildah-build:
     - when: never
 
 unit-test:
-  tags:
-    - shared
   stage: test:unit
   image: node:22-alpine
   script:
