@@ -68,8 +68,6 @@ unit-test:
     - when: never
   
 docker-build-dev:
-  tags:
-    - shared
   stage: docker:dev
   image: docker:latest
   variables:
@@ -90,8 +88,6 @@ docker-build-dev:
     - when: never
 
 docker-build-staging:
-  tags:
-    - shared
   stage: docker:staging
   image: docker:latest
   variables:
@@ -113,8 +109,6 @@ docker-build-staging:
     - when: never
 
 docker-build-uat:
-  tags:
-    - shared
   stage: docker:uat
   image: docker:latest
   variables:
@@ -136,8 +130,6 @@ docker-build-uat:
     - when: never
 
 docker-build-prod:
-  tags:
-    - shared
   stage: docker:prod
   image: docker:latest
   variables:
@@ -159,8 +151,6 @@ docker-build-prod:
     - when: never
 
 docker-build-hotfix:
-  tags:
-    - shared
   stage: docker:hotfix
   image: docker:latest
   variables:
@@ -181,8 +171,6 @@ docker-build-hotfix:
     - when: never
 
 scan-image:
-  tags:
-    - shared
   stage: scan:image
   image: 
     name: docker.io/aquasec/trivy:latest
@@ -212,8 +200,6 @@ scan-image:
     - when: never
 
 scan-image-hotfix:
-  tags:
-    - shared
   stage: scan:image
   image: 
     name: docker.io/aquasec/trivy:latest
@@ -244,8 +230,6 @@ scan-image-hotfix:
 
 deploy-dev:
   stage: deploy:dev
-  tags:
-    - shared
   image:
     name: line/kubectl-kustomize:latest
     entrypoint: [""]
@@ -267,8 +251,6 @@ deploy-dev:
     - when: never
 
 deploy-staging:
-  tags:
-    - shared
   stage: deploy:staging
   image:
     name: line/kubectl-kustomize:latest
@@ -291,8 +273,6 @@ deploy-staging:
     - when: never
   
 deploy-uat:
-  tags:
-    - shared
   stage: deploy:uat
   image:
     name: line/kubectl-kustomize:latest
@@ -315,8 +295,6 @@ deploy-uat:
     - when: never
 
 deploy-prod:
-  tags:
-    - shared
   stage: deploy:prod
   image:
     name: line/kubectl-kustomize:latest
@@ -341,8 +319,6 @@ deploy-prod:
     - when: never
 
 deploy-hotfix:
-  tags:
-    - shared
   stage: deploy:hotfix
   image: docker:latest
   services:
