@@ -51,6 +51,8 @@ buildah-build:
     - when: never
 
 unit-test:
+  tags:
+    - buildah-runner
   stage: test:unit
   image: node:22-alpine
   script:
@@ -171,6 +173,8 @@ docker-build-hotfix:
     - when: never
 
 scan-image:
+  tags:
+    - buildah-runner
   stage: scan:image
   image: 
     name: docker.io/aquasec/trivy:latest
@@ -229,6 +233,8 @@ scan-image-hotfix:
     - when: never
 
 deploy-dev:
+  tags:
+    - buildah-runner
   stage: deploy:dev
   image:
     name: line/kubectl-kustomize:latest
